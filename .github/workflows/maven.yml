@@ -23,7 +23,7 @@ jobs:
     - name: Build with Maven
       run: |
         cd ./airport-management-backend
-        mvn -B package --file pom.xml
+        ./mvnw -B package --file pom.xml
       
     - name: Add coverage to PR
       id: jacoco

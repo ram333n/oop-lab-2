@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CrewMemberRepository extends JpaRepository<CrewMember, Long> {
 
+  long deleteCrewMemberById(Long id);
+
 }

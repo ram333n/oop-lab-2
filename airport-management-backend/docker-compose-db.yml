@@ -1,0 +1,11 @@
+version: "3"
+services:
+  postgres-db:
+    image: postgres
+    container_name: airport-management-db
+    environment:
+      - POSTGRES_USER=prokopchuk
+      - POSTGRES_DB=airport-management-db
+      - POSTGRES_PASSWORD=localdb
+    ports:
+      - 5432:5432

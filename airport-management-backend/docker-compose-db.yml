@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  postgres-db:
+    image: postgres
+    container_name: airport-management-db
+    environment:
+      - POSTGRES_USER=prokopchuk
+      - POSTGRES_DB=airport-management-db
+      - POSTGRES_PASSWORD=localdb
+    ports:
+      - "5432:5432"
+#  TODO: add volumes
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: localdb
+    ports:
+      - "5050:80"

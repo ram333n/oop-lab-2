@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    username: ${DB_USERNAME:localdb}
+    password: ${DB_PASSWORD:localdb}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create

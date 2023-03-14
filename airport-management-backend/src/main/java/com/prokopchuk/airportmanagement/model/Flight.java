@@ -6,14 +6,23 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "flights")
 public class Flight {
@@ -36,6 +45,13 @@ public class Flight {
 
   @ManyToMany(mappedBy = "flights")
   private Set<CrewMember> crewMembers = new HashSet<>();
+
+  @PreRemove
+  private void removeFlightFromCrewMembers() {
+    for (CrewMember crewMember : crewMembers) {
+      crewMember.getFlights().remove(this);
+    }
+  }
 
   @Override
   public boolean equals(Object o) {

@@ -19,8 +19,8 @@ import org.springframework.test.context.jdbc.SqlGroup;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @SqlGroup({
-  @Sql(scripts = "/clear.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-  @Sql(scripts = "/test-init.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/clear.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
+    @Sql(scripts = "/test-init.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 })
 class CrewMemberServiceTest {
 
@@ -42,6 +42,7 @@ class CrewMemberServiceTest {
 
     CrewMember actual = crewMemberService.saveCrewMember(toSave);
 
+    assertEquals(5L, actual.getId());
     assertEquals("Andrii", actual.getName());
     assertEquals("Petrenko", actual.getSurname());
     assertEquals(Position.NAVIGATOR, actual.getPosition());

@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.prokopchuk.airportmanagement.model.CrewMember;
 import com.prokopchuk.airportmanagement.model.enums.Position;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,28 @@ class CrewMemberServiceTest {
     Optional<CrewMember> actual = crewMemberService.findCrewMemberById(0L);
 
     assertTrue(actual.isEmpty());
+  }
+
+  @Test
+  void existsByIdWhenProvidedExistentId() {
+    boolean isFound = crewMemberService.existsById(1L);
+
+    assertTrue(isFound);
+  }
+
+  @Test
+  void existsByIdWhenProvidedNonExistentId() {
+    boolean isFound = crewMemberService.existsById(0L);
+
+    assertFalse(isFound);
+  }
+
+  @Test
+  void findAllWorksProperly() {
+    List<CrewMember> crewMembers = crewMemberService.findAll();
+
+    assertEquals(4, crewMembers.size());
+    assertTrue(crewMembers.stream().anyMatch(m -> Objects.equals("Roman", m.getName())));
   }
 
   @Test

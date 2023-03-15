@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: airport-management-api
+    environment:
+      - SERVER_PORT=8080
+      - DB_USERNAME=prokopchuk
+      - DB_PASSWORD=localdb
+      - DB_URL=jdbc:postgresql://airport-management-db:5432/airport-management-db
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    image: postgres
+    container_name: airport-management-db
+    environment:
+      - POSTGRES_USER=prokopchuk
+      - POSTGRES_DB=airport-management-db
+      - POSTGRES_PASSWORD=localdb
+    ports:
+      - "5432:5432"
+  #  TODO: add volumes
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: localdb
+    ports:
+      - "5050:80"

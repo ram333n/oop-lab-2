@@ -1,14 +1,8 @@
 # syntax=docker/dockerfile:1
 FROM openjdk:17-alpine
 
-ENV DB_USERNAME=prokochuk \
-    DB_PASSWORD=localdb \
-    DB_URL=jdbc:postgresql://localhost:5432/airport-management-db
+COPY ./target/*.jar /application/app.jar
 
-RUN mkdir -p "/home/app"
+WORKDIR /application
 
-COPY ./target/airport-management-0.0.1-SNAPSHOT.jar /home/app
-
-WORKDIR /home/app
-
-CMD ["java", "-jar", "airport-management-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]

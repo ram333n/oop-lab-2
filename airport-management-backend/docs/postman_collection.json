@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "7cdccff1-7564-46f8-89fa-58904454c024",
+		"name": "Airport management system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19089953"
+	},
+	"item": [
+		{
+			"name": "Crew members",
+			"item": [
+				{
+					"name": "Get all crew members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/crew-members",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"crew-members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get crew member by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/crew-members/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"crew-members",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new crew member",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sus\",\r\n    \"surname\": \"Abobich\",\r\n    \"position\": \"OPERATOR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/crew-members",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"crew-members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update crew member",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Petro\",\r\n    \"surname\": \"Apostol\",\r\n    \"position\": \"PILOT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/crew-members/5",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"crew-members",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/crew-members/5",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"crew-members",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "localhost:8080",
+			"type": "string"
+		}
+	]
+}

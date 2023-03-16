@@ -107,13 +107,13 @@ class CrewMemberControllerTest {
         CrewMemberResponseDto.class
     );
 
-    CrewMemberResponseDto responseDto = response.getBody();
+    CrewMemberResponseDto responseBody = response.getBody();
 
     assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertEquals(5L, responseDto.getId());
-    assertEquals("Andrii", responseDto.getName());
-    assertEquals("Prokopenko", responseDto.getSurname());
-    assertEquals(Position.NAVIGATOR, responseDto.getPosition());
+    assertEquals(5L, responseBody.getId());
+    assertEquals("Andrii", responseBody.getName());
+    assertEquals("Prokopenko", responseBody.getSurname());
+    assertEquals(Position.NAVIGATOR, responseBody.getPosition());
   }
 
   @Test
@@ -153,13 +153,13 @@ class CrewMemberControllerTest {
         1L
     );
 
-    CrewMemberResponseDto responseDto = response.getBody();
+    CrewMemberResponseDto responseBody = response.getBody();
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(1L, responseDto.getId());
-    assertEquals("Andrii", responseDto.getName());
-    assertEquals("Prokopenko", responseDto.getSurname());
-    assertEquals(Position.NAVIGATOR, responseDto.getPosition());
+    assertEquals(1L, responseBody.getId());
+    assertEquals("Andrii", responseBody.getName());
+    assertEquals("Prokopenko", responseBody.getSurname());
+    assertEquals(Position.NAVIGATOR, responseBody.getPosition());
   }
 
   @Test

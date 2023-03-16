@@ -1,7 +1,6 @@
 package com.prokopchuk.airportmanagement.controller.dto.crewmember;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.prokopchuk.airportmanagement.model.Flight;
+import com.prokopchuk.airportmanagement.controller.dto.flight.FlightWithoutCrewMembersDto;
 import com.prokopchuk.airportmanagement.model.enums.Position;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -19,8 +18,6 @@ public class CrewMemberResponseDto {
   private String name;
   private String surname;
   private Position position;
-
-  @JsonIgnore // TODO: create DTO to avoid StackOverflowError
-  private List<Flight> flights;
+  private List<FlightWithoutCrewMembersDto> flights;
 
 }

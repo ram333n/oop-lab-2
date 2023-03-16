@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.prokopchuk.airportmanagement.model.CrewMember;
+import com.prokopchuk.airportmanagement.model.Flight;
 import com.prokopchuk.airportmanagement.model.enums.Position;
 import java.util.List;
 import java.util.Objects;
@@ -52,12 +53,12 @@ class CrewMemberServiceTest {
 
   @Test
   void findCrewMemberByIdWhenProvidedExistentId() {
-    Optional<CrewMember> actual = crewMemberService.findCrewMemberById(1L);
+    Optional<CrewMember> actualOptional = crewMemberService.findCrewMemberById(1L);
+    CrewMember actual = actualOptional.orElseThrow();
 
-    assertTrue(actual.isPresent());
-    assertEquals("Roman", actual.get().getName());
-    assertEquals("Prokopchuk", actual.get().getSurname());
-    assertEquals(Position.PILOT, actual.get().getPosition());
+    assertEquals("Roman", actual.getName());
+    assertEquals("Prokopchuk", actual.getSurname());
+    assertEquals(Position.PILOT, actual.getPosition());
   }
 
   @Test
@@ -87,6 +88,17 @@ class CrewMemberServiceTest {
 
     assertEquals(4, crewMembers.size());
     assertTrue(crewMembers.stream().anyMatch(m -> Objects.equals("Roman", m.getName())));
+  }
+
+  @Test
+  void findFlightsOfCrewMemberWorksProperly() {
+    Optional<CrewMember> crewMemberOptional = crewMemberService.findCrewMemberById(1L);
+    CrewMember crewMember = crewMemberOptional.orElseThrow();
+
+    List<Flight> flights = crewMemberService.findFlightsOfCrewMember(crewMember);
+
+    assertEquals(2, flights.size());
+    assertTrue(flights.stream().anyMatch(f -> Objects.equals("Krakow", f.getDestination())));
   }
 
   @Test

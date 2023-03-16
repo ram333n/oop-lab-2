@@ -80,6 +80,7 @@ class CrewMemberControllerTest {
     assertEquals("Roman", crewMember.getName());
     assertEquals("Prokopchuk", crewMember.getSurname());
     assertEquals(Position.PILOT, crewMember.getPosition());
+    assertEquals(2, crewMember.getFlights().size());
   }
 
   @Test

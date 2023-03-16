@@ -4,8 +4,10 @@ import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberInpu
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberResponseDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMembersListDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberWithoutFlightsDto;
+import com.prokopchuk.airportmanagement.controller.dto.flight.FlightWithoutCrewMembersDto;
 import com.prokopchuk.airportmanagement.exception.CrewMemberNotFoundException;
 import com.prokopchuk.airportmanagement.model.CrewMember;
+import com.prokopchuk.airportmanagement.model.Flight;
 import com.prokopchuk.airportmanagement.service.CrewMemberService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -48,15 +50,27 @@ public class CrewMemberController {
 
   @GetMapping("/crew-members/{crew-member-id}")
   public CrewMemberResponseDto getCrewMemberById(@PathVariable("crew-member-id") Long id) {
-    Optional<CrewMember> crewMember = crewMemberService.findCrewMemberById(id);
+    Optional<CrewMember> crewMemberOptional = crewMemberService.findCrewMemberById(id);
 
-    if (crewMember.isEmpty()) {
+    if (crewMemberOptional.isEmpty()) {
       throw new CrewMemberNotFoundException(
           String.format("Crew member with id %d not found", id) //TODO: handle it
       );
     }
 
-    return modelMapper.map(crewMember.get(), CrewMemberResponseDto.class);
+    CrewMember crewMember = crewMemberOptional.get();
+
+    List<Flight> flightEntities
+        = crewMemberService.findFlightsOfCrewMember(crewMemberOptional.get());
+    List<FlightWithoutCrewMembersDto> flightDtos = flightEntities.stream()
+        .map(e -> modelMapper.map(e, FlightWithoutCrewMembersDto.class))
+        .toList();
+
+    CrewMemberResponseDto responseBody
+        = modelMapper.map(crewMember, CrewMemberResponseDto.class);
+    responseBody.setFlights(flightDtos);
+
+    return responseBody;
   }
 
   @PostMapping("/crew-members")

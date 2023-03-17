@@ -5,7 +5,7 @@ import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberResp
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMembersListDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberWithoutFlightsDto;
 import com.prokopchuk.airportmanagement.controller.dto.flight.FlightWithoutCrewMembersDto;
-import com.prokopchuk.airportmanagement.exception.CrewMemberNotFoundException;
+import com.prokopchuk.airportmanagement.exception.NotFoundException;
 import com.prokopchuk.airportmanagement.model.CrewMember;
 import com.prokopchuk.airportmanagement.model.Flight;
 import com.prokopchuk.airportmanagement.service.CrewMemberService;
@@ -53,9 +53,7 @@ public class CrewMemberController {
     Optional<CrewMember> crewMemberOptional = crewMemberService.findCrewMemberById(id);
 
     if (crewMemberOptional.isEmpty()) {
-      throw new CrewMemberNotFoundException(
-          String.format("Crew member with id %d not found", id) //TODO: handle it
-      );
+      throw new NotFoundException(NotFoundException.CREW_MEMBER_NOT_FOUND);
     }
 
     CrewMember crewMember = crewMemberOptional.get();
@@ -86,9 +84,7 @@ public class CrewMemberController {
   public CrewMemberResponseDto updateCrewMember(@PathVariable("crew-member-id") Long id,
                                                 @Valid @RequestBody CrewMemberInputDto data) {
     if (!crewMemberService.existsById(id)) {
-      throw new CrewMemberNotFoundException(
-          String.format("Crew member with id %d not found", id) //TODO: handle it
-      );
+      throw new NotFoundException(NotFoundException.CREW_MEMBER_NOT_FOUND);
     }
 
     CrewMember toUpdate = modelMapper.map(data, CrewMember.class);
@@ -105,9 +101,7 @@ public class CrewMemberController {
     boolean isDeleted = crewMemberService.deleteCrewMemberById(id);
 
     if (!isDeleted) {
-      throw new CrewMemberNotFoundException(
-          String.format("Crew member with id %d not found", id) //TODO: handle it
-      );
+      throw new NotFoundException(NotFoundException.CREW_MEMBER_NOT_FOUND);
     }
   }
 

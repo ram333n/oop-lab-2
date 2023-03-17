@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CrewMemberInputDto {
+public class CrewMemberForm {
 
   @NotBlank
   @Size(max = 255)

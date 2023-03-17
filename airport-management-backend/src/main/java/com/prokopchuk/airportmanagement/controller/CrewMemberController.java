@@ -1,6 +1,6 @@
 package com.prokopchuk.airportmanagement.controller;
 
-import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberInputDto;
+import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberForm;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberResponseDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMembersListDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberWithoutFlightsDto;
@@ -73,8 +73,8 @@ public class CrewMemberController {
 
   @PostMapping("/crew-members")
   @ResponseStatus(HttpStatus.CREATED)
-  public CrewMemberResponseDto createCrewMember(@Valid @RequestBody CrewMemberInputDto data) {
-    CrewMember toSave = modelMapper.map(data, CrewMember.class);
+  public CrewMemberResponseDto createCrewMember(@Valid @RequestBody CrewMemberForm form) {
+    CrewMember toSave = modelMapper.map(form, CrewMember.class);
     CrewMember response = crewMemberService.saveCrewMember(toSave);
 
     return modelMapper.map(response, CrewMemberResponseDto.class);
@@ -82,12 +82,12 @@ public class CrewMemberController {
 
   @PutMapping("/crew-members/{crew-member-id}")
   public CrewMemberResponseDto updateCrewMember(@PathVariable("crew-member-id") Long id,
-                                                @Valid @RequestBody CrewMemberInputDto data) {
+                                                @Valid @RequestBody CrewMemberForm form) {
     if (!crewMemberService.existsById(id)) {
       throw new NotFoundException(NotFoundException.CREW_MEMBER_NOT_FOUND);
     }
 
-    CrewMember toUpdate = modelMapper.map(data, CrewMember.class);
+    CrewMember toUpdate = modelMapper.map(form, CrewMember.class);
     toUpdate.setId(id);
 
     CrewMember response = crewMemberService.updateCrewMember(toUpdate);

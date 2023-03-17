@@ -4,11 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberInputDto;
+import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberForm;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberResponseDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberWithoutFlightsDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMembersListDto;
-import com.prokopchuk.airportmanagement.model.CrewMember;
 import com.prokopchuk.airportmanagement.model.enums.Position;
 import com.prokopchuk.airportmanagement.service.CrewMemberService;
 import java.util.List;
@@ -96,7 +95,7 @@ class CrewMemberControllerTest {
 
   @Test
   void createCrewMemberWorksProperly() {
-    CrewMemberInputDto inputDto = new CrewMemberInputDto(
+    CrewMemberForm form = new CrewMemberForm(
         "Andrii",
         "Prokopenko",
         Position.NAVIGATOR
@@ -104,7 +103,7 @@ class CrewMemberControllerTest {
 
     ResponseEntity<CrewMemberResponseDto> response = restTemplate.postForEntity(
         "/crew-members",
-        inputDto,
+        form,
         CrewMemberResponseDto.class
     );
 
@@ -119,13 +118,13 @@ class CrewMemberControllerTest {
 
   @Test
   void updateCrewMemberWhenProvidedNonExistentId() {
-    CrewMemberInputDto inputDto = new CrewMemberInputDto(
+    CrewMemberForm form = new CrewMemberForm(
         "Andrii",
         "Prokopenko",
         Position.NAVIGATOR
     );
 
-    HttpEntity<CrewMemberInputDto> httpEntity = new HttpEntity<>(inputDto);
+    HttpEntity<CrewMemberForm> httpEntity = new HttpEntity<>(form);
     ResponseEntity<CrewMemberResponseDto> response = restTemplate.exchange(
         "/crew-members/{crew-member-number}",
         HttpMethod.PUT,
@@ -139,13 +138,13 @@ class CrewMemberControllerTest {
 
   @Test
   void updateCrewMemberWhenProvidedExistentId() {
-    CrewMemberInputDto inputDto = new CrewMemberInputDto(
+    CrewMemberForm form = new CrewMemberForm(
         "Andrii",
         "Prokopenko",
         Position.NAVIGATOR
     );
 
-    HttpEntity<CrewMemberInputDto> httpEntity = new HttpEntity<>(inputDto);
+    HttpEntity<CrewMemberForm> httpEntity = new HttpEntity<>(form);
     ResponseEntity<CrewMemberResponseDto> response = restTemplate.exchange(
         "/crew-members/{crew-member-number}",
         HttpMethod.PUT,

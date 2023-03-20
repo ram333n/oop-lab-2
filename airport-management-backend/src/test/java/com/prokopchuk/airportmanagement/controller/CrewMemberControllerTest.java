@@ -67,7 +67,21 @@ class CrewMemberControllerTest {
   }
 
   @Test
-  void getCrewMemberByIdWhenMemberExists() {
+  void getCrewMemberByIdWhenProvidedNonExistentId() {
+    ResponseEntity<ErrorMessage> response = restTemplate.getForEntity(
+        "/crew-members/{crew-member-id}",
+        ErrorMessage.class,
+        0L
+    );
+
+    ErrorMessage responseBody = response.getBody();
+
+    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    assertEquals("crew_member_not_found", responseBody.getErrorCode());
+  }
+
+  @Test
+  void getCrewMemberByIdWhenProvidedExistentId() {
     ResponseEntity<CrewMemberResponseDto> response = restTemplate.getForEntity(
         "/crew-members/{crew-member-id}",
         CrewMemberResponseDto.class,
@@ -85,20 +99,6 @@ class CrewMemberControllerTest {
   }
 
   @Test
-  void getCrewMemberByIdWhenMemberNotExists() {
-    ResponseEntity<ErrorMessage> response = restTemplate.getForEntity(
-        "/crew-members/{crew-member-id}",
-        ErrorMessage.class,
-        0L
-    );
-
-    ErrorMessage responseBody = response.getBody();
-
-    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("crew_member_not_found", responseBody.getErrorCode());
-  }
-
-  @Test
   void createCrewMemberWorksProperly() {
     CrewMemberForm form = new CrewMemberForm(
         "Andrii",
@@ -112,13 +112,13 @@ class CrewMemberControllerTest {
         CrewMemberResponseDto.class
     );
 
-    CrewMemberResponseDto responseBody = response.getBody();
+    CrewMemberResponseDto crewMember = response.getBody();
 
     assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertEquals(5L, responseBody.getId());
-    assertEquals("Andrii", responseBody.getName());
-    assertEquals("Prokopenko", responseBody.getSurname());
-    assertEquals(Position.NAVIGATOR, responseBody.getPosition());
+    assertEquals(5L, crewMember.getId());
+    assertEquals("Andrii", crewMember.getName());
+    assertEquals("Prokopenko", crewMember.getSurname());
+    assertEquals(Position.NAVIGATOR, crewMember.getPosition());
   }
 
   @Test
@@ -131,7 +131,7 @@ class CrewMemberControllerTest {
 
     HttpEntity<CrewMemberForm> httpEntity = new HttpEntity<>(form);
     ResponseEntity<ErrorMessage> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}",
+        "/crew-members/{crew-member-id}",
         HttpMethod.PUT,
         httpEntity,
         ErrorMessage.class,
@@ -154,26 +154,26 @@ class CrewMemberControllerTest {
 
     HttpEntity<CrewMemberForm> httpEntity = new HttpEntity<>(form);
     ResponseEntity<CrewMemberResponseDto> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}",
+        "/crew-members/{crew-member-id}",
         HttpMethod.PUT,
         httpEntity,
         CrewMemberResponseDto.class,
         1L
     );
 
-    CrewMemberResponseDto responseBody = response.getBody();
+    CrewMemberResponseDto crewMember = response.getBody();
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(1L, responseBody.getId());
-    assertEquals("Andrii", responseBody.getName());
-    assertEquals("Prokopenko", responseBody.getSurname());
-    assertEquals(Position.NAVIGATOR, responseBody.getPosition());
+    assertEquals(1L, crewMember.getId());
+    assertEquals("Andrii", crewMember.getName());
+    assertEquals("Prokopenko", crewMember.getSurname());
+    assertEquals(Position.NAVIGATOR, crewMember.getPosition());
   }
 
   @Test
   void deleteCrewMemberWhenProvidedNonExistentId() {
     ResponseEntity<ErrorMessage> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}",
+        "/crew-members/{crew-member-id}",
         HttpMethod.DELETE,
         HttpEntity.EMPTY,
         ErrorMessage.class,
@@ -189,7 +189,7 @@ class CrewMemberControllerTest {
   @Test
   void deleteCrewMemberWhenProvidedExistentId() {
     ResponseEntity<Void> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}",
+        "/crew-members/{crew-member-id}",
         HttpMethod.DELETE,
         HttpEntity.EMPTY,
         Void.class,
@@ -204,7 +204,7 @@ class CrewMemberControllerTest {
     IdToLinkUpDto flightId = new IdToLinkUpDto(2L);
 
     ResponseEntity<ErrorMessage> response = restTemplate.postForEntity(
-        "/crew-members/{crew-member-number}/flights",
+        "/crew-members/{crew-member-id}/flights",
         flightId,
         ErrorMessage.class,
         42L
@@ -221,7 +221,7 @@ class CrewMemberControllerTest {
     IdToLinkUpDto flightId = new IdToLinkUpDto(42L);
 
     ResponseEntity<ErrorMessage> response = restTemplate.postForEntity(
-        "/crew-members/{crew-member-number}/flights",
+        "/crew-members/{crew-member-id}/flights",
         flightId,
         ErrorMessage.class,
         1L
@@ -238,7 +238,7 @@ class CrewMemberControllerTest {
     IdToLinkUpDto flightId = new IdToLinkUpDto(1L);
 
     ResponseEntity<ErrorMessage> response = restTemplate.postForEntity(
-        "/crew-members/{crew-member-number}/flights",
+        "/crew-members/{crew-member-id}/flights",
         flightId,
         ErrorMessage.class,
         1L
@@ -255,22 +255,22 @@ class CrewMemberControllerTest {
     IdToLinkUpDto flightId = new IdToLinkUpDto(2L);
 
     ResponseEntity<CrewMemberResponseDto> response = restTemplate.postForEntity(
-        "/crew-members/{crew-member-number}/flights",
+        "/crew-members/{crew-member-id}/flights",
         flightId,
         CrewMemberResponseDto.class,
         4L
     );
 
-    CrewMemberResponseDto responseBody = response.getBody();
+    CrewMemberResponseDto crewMember = response.getBody();
 
     assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertEquals(3, responseBody.getFlights().size());
+    assertEquals(3, crewMember.getFlights().size());
   }
 
   @Test
   void unlinkUpFlightWhenProvidedNonExistentCrewMemberId() {
     ResponseEntity<ErrorMessage> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}/flights/{flight-number}",
+        "/crew-members/{crew-member-id}/flights/{flight-id}",
         HttpMethod.DELETE,
         HttpEntity.EMPTY,
         ErrorMessage.class,
@@ -287,7 +287,7 @@ class CrewMemberControllerTest {
   @Test
   void unlinkUpFlightWhenProvidedNonExistentFlightId() {
     ResponseEntity<ErrorMessage> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}/flights/{flight-number}",
+        "/crew-members/{crew-member-id}/flights/{flight-id}",
         HttpMethod.DELETE,
         HttpEntity.EMPTY,
         ErrorMessage.class,
@@ -304,7 +304,7 @@ class CrewMemberControllerTest {
   @Test
   void unlinkUpFlightWhenLinkIsAbsent() {
     ResponseEntity<ErrorMessage> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}/flights/{flight-number}",
+        "/crew-members/{crew-member-id}/flights/{flight-id}",
         HttpMethod.DELETE,
         HttpEntity.EMPTY,
         ErrorMessage.class,
@@ -321,7 +321,7 @@ class CrewMemberControllerTest {
   @Test
   void unlinkUpFlightWorksProperly() {
     ResponseEntity<Void> response = restTemplate.exchange(
-        "/crew-members/{crew-member-number}/flights/{flight-number}",
+        "/crew-members/{crew-member-id}/flights/{flight-id}",
         HttpMethod.DELETE,
         HttpEntity.EMPTY,
         Void.class,

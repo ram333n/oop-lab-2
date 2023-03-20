@@ -61,7 +61,7 @@ public class CrewMemberController {
       throw new NotFoundException(NotFoundException.CREW_MEMBER_NOT_FOUND);
     }
 
-    return mapToResponseDto(crewMemberOptional.get());
+    return mapAndFetchFlights(crewMemberOptional.get());
   }
 
   @PostMapping("/crew-members")
@@ -70,6 +70,7 @@ public class CrewMemberController {
     CrewMember toSave = modelMapper.map(form, CrewMember.class);
     CrewMember response = crewMemberService.saveCrewMember(toSave);
 
+    //we don't use mapAndFetchFlights(), because flights list is empty after creation
     return modelMapper.map(response, CrewMemberResponseDto.class);
   }
 
@@ -85,7 +86,7 @@ public class CrewMemberController {
 
     CrewMember response = crewMemberService.updateCrewMember(toUpdate);
 
-    return modelMapper.map(response, CrewMemberResponseDto.class);
+    return mapAndFetchFlights(response);
   }
 
   @DeleteMapping("/crew-members/{crew-member-id}")
@@ -107,7 +108,7 @@ public class CrewMemberController {
 
     Optional<CrewMember> crewMemberOptional = crewMemberService.findCrewMemberById(crewMemberId);
 
-    return mapToResponseDto(crewMemberOptional.get());
+    return mapAndFetchFlights(crewMemberOptional.get());
   }
 
   @DeleteMapping("/crew-members/{crew-member-id}/flights/{flight-id}")
@@ -117,7 +118,7 @@ public class CrewMemberController {
     linkService.unlinkUpCrewMemberAndFlight(crewMemberId, flightId);
   }
 
-  private CrewMemberResponseDto mapToResponseDto(CrewMember crewMember) {
+  private CrewMemberResponseDto mapAndFetchFlights(CrewMember crewMember) {
     List<Flight> flightEntities
         = crewMemberService.findFlightsOfCrewMember(crewMember);
     List<FlightWithoutCrewMembersDto> flightDtos = flightEntities.stream()

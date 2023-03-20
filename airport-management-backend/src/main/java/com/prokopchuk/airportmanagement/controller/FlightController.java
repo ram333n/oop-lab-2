@@ -16,9 +16,11 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +60,7 @@ public class FlightController {
       throw new NotFoundException(NotFoundException.FLIGHT_NOT_FOUND);
     }
 
-    return mapToResponseDto(flightOptional.get());
+    return mapAndFetchCrewMembers(flightOptional.get());
   }
 
   @PostMapping("/flights")
@@ -67,10 +69,36 @@ public class FlightController {
     Flight toSave = modelMapper.map(form, Flight.class);
     Flight response = flightService.saveFlight(toSave);
 
-    return mapToResponseDto(response);
+    //we don't use mapAndFetchCrewMembers(), because crew members list is empty after creation
+    return modelMapper.map(response, FlightResponseDto.class);
   }
 
-  private FlightResponseDto mapToResponseDto(Flight flight) {
+  @PutMapping("/flights/{flight-id}")
+  public FlightResponseDto updateFlight(@PathVariable("flight-id") Long id,
+                                        @Valid @RequestBody FlightForm form) {
+    if (!flightService.existsById(id)) {
+      throw new NotFoundException(NotFoundException.FLIGHT_NOT_FOUND);
+    }
+
+    Flight toUpdate = modelMapper.map(form, Flight.class);
+    toUpdate.setId(id);
+
+    Flight response = flightService.updateFlight(toUpdate);
+
+    return mapAndFetchCrewMembers(response);
+  }
+
+  @DeleteMapping("/flights/{flight-id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteFlight(@PathVariable("flight-id") Long id) {
+    boolean isDeleted = flightService.deleteFlightById(id);
+
+    if (!isDeleted) {
+      throw new NotFoundException(NotFoundException.FLIGHT_NOT_FOUND);
+    }
+  }
+
+  private FlightResponseDto mapAndFetchCrewMembers(Flight flight) {
     List<CrewMember> crewMemberEntities = flightService.findCrewMembersOfFlight(flight);
     List<CrewMemberWithoutFlightsDto> crewMembersDtos = crewMemberEntities.stream()
         .map(e -> modelMapper.map(e, CrewMemberWithoutFlightsDto.class))

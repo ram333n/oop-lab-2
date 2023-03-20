@@ -24,7 +24,8 @@ services:
       - POSTGRES_PASSWORD=localdb
     ports:
       - "5432:5432"
-  #  TODO: add volumes
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -34,3 +35,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: localdb
     ports:
       - "5050:80"
+
+volumes:
+  db-data:
+    driver: local

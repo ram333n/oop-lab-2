@@ -1,6 +1,6 @@
-package com.prokopchuk.airportmanagement.controller.dto;
+package com.prokopchuk.airportmanagement.controller.dto.flight;
 
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IdToLinkUpDto {
+public class FlightsListDto {
 
-  @NotNull
-  private Long idToLink;
+  private List<FlightWithoutCrewMembersDto> flights;
 
 }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7cdccff1-7564-46f8-89fa-58904454c024",
+		"_postman_id": "722035a2-ffb5-4576-9fdd-154cbbf59b88",
 		"name": "Airport management system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "19089953"
@@ -85,6 +85,24 @@
 							}
 						},
 						"url": {
+							"raw": "{{server}}/crew-members/3",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"crew-members",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete crew member by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
 							"raw": "{{server}}/crew-members/5",
 							"host": [
 								"{{server}}"
@@ -98,18 +116,207 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Link up flight",
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idToLink\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{server}}/crew-members/5",
+							"raw": "{{server}}/crew-members/1/flights",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"crew-members",
-								"5"
+								"1",
+								"flights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlink up flight",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/crew-members/1/flights/2",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"crew-members",
+								"1",
+								"flights",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Flights",
+			"item": [
+				{
+					"name": "Get all flights",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/flights",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"flights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get flight by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/flights/10",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"flights",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new flight",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"departureFrom\": \"Boryspil\",\r\n    \"destination\": \"Lviv\",\r\n    \"departureTime\": \"2023-07-23T23:53:00\",\r\n    \"arrivalTime\": \"2023-07-24T11:32:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/flights",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"flights"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update flight",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"departureFrom\": \"Nova Borova\",\r\n    \"destination\": \"Lviv\",\r\n    \"departureTime\": \"2023-07-23T23:53:00\",\r\n    \"arrivalTime\": \"2023-07-24T11:32:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/flights/10",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"flights",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete flight by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/flights/11",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"flights",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Link up crew member",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idToLink\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/flights/10/crew-members",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"flights",
+								"10",
+								"crew-members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlink up crew member",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/flights/10/crew-members/1",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"flights",
+								"10",
+								"crew-members",
+								"1"
 							]
 						}
 					},

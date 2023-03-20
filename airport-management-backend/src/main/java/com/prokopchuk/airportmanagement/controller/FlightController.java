@@ -1,6 +1,7 @@
 package com.prokopchuk.airportmanagement.controller;
 
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberWithoutFlightsDto;
+import com.prokopchuk.airportmanagement.controller.dto.flight.FlightForm;
 import com.prokopchuk.airportmanagement.controller.dto.flight.FlightResponseDto;
 import com.prokopchuk.airportmanagement.controller.dto.flight.FlightWithoutCrewMembersDto;
 import com.prokopchuk.airportmanagement.controller.dto.flight.FlightsListDto;
@@ -9,12 +10,17 @@ import com.prokopchuk.airportmanagement.model.CrewMember;
 import com.prokopchuk.airportmanagement.model.Flight;
 import com.prokopchuk.airportmanagement.service.CrewMembersFlightsLinkService;
 import com.prokopchuk.airportmanagement.service.FlightService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -53,6 +59,15 @@ public class FlightController {
     }
 
     return mapToResponseDto(flightOptional.get());
+  }
+
+  @PostMapping("/flights")
+  @ResponseStatus(HttpStatus.CREATED)
+  public FlightResponseDto createFlight(@Valid @RequestBody FlightForm form) {
+    Flight toSave = modelMapper.map(form, Flight.class);
+    Flight response = flightService.saveFlight(toSave);
+
+    return mapToResponseDto(response);
   }
 
   private FlightResponseDto mapToResponseDto(Flight flight) {

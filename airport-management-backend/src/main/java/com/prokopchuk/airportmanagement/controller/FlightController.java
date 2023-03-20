@@ -1,5 +1,6 @@
 package com.prokopchuk.airportmanagement.controller;
 
+import com.prokopchuk.airportmanagement.controller.dto.IdToLinkUpDto;
 import com.prokopchuk.airportmanagement.controller.dto.crewmember.CrewMemberWithoutFlightsDto;
 import com.prokopchuk.airportmanagement.controller.dto.flight.FlightForm;
 import com.prokopchuk.airportmanagement.controller.dto.flight.FlightResponseDto;
@@ -96,6 +97,25 @@ public class FlightController {
     if (!isDeleted) {
       throw new NotFoundException(NotFoundException.FLIGHT_NOT_FOUND);
     }
+  }
+
+  @PostMapping("/flights/{flight-id}/crew-members")
+  @ResponseStatus(HttpStatus.CREATED)
+  public FlightResponseDto linkUpCrewMember(@PathVariable("flight-id") Long flightId,
+                                            @RequestBody IdToLinkUpDto crewMemberId) {
+    //existence validation is here
+    linkService.linkUpCrewMemberAndFlight(crewMemberId.getIdToLink(), flightId);
+
+    Optional<Flight> flightOptional = flightService.findFlightById(flightId);
+
+    return mapAndFetchCrewMembers(flightOptional.get());
+  }
+
+  @DeleteMapping("/flights/{flight-id}/crew-members/{crew-member-id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void unlinkUpCrewMember(@PathVariable("flight-id") Long flightId,
+                                 @PathVariable("crew-member-id") Long crewMemberId) {
+    linkService.unlinkUpCrewMemberAndFlight(crewMemberId, flightId);
   }
 
   private FlightResponseDto mapAndFetchCrewMembers(Flight flight) {

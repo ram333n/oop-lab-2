@@ -2,11 +2,13 @@ package com.prokopchuk.airportmanagement.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.prokopchuk.airportmanagement.model.CrewMember;
 import com.prokopchuk.airportmanagement.model.Flight;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,39 @@ class FlightServiceTest {
     Optional<Flight> actual = flightService.findFlightById(0L);
 
     assertTrue(actual.isEmpty());
+  }
+
+  @Test
+  void existsByIdWhenProvidedExistentId() {
+    boolean isFound = flightService.existsById(1L);
+
+    assertTrue(isFound);
+  }
+
+  @Test
+  void existsByIdWhenProvidedNonExistentId() {
+    boolean isFound = flightService.existsById(0L);
+
+    assertFalse(isFound);
+  }
+
+  @Test
+  void findAllWorksProperly() {
+    List<Flight> flights = flightService.findAll();
+
+    assertEquals(3, flights.size());
+    assertTrue(flights.stream().anyMatch(f -> Objects.equals("Krakow", f.getDestination())));
+  }
+
+  @Test
+  void findCrewMembersOfFlightWorksProperly() {
+    Optional<Flight> flightOptional = flightService.findFlightById(1L);
+    Flight flight = flightOptional.orElseThrow();
+
+    List<CrewMember> crewMembers = flightService.findCrewMembersOfFlight(flight);
+
+    assertEquals(3, crewMembers.size());
+    assertTrue(crewMembers.stream().anyMatch(m -> Objects.equals("Prokopchuk", m.getSurname())));
   }
 
   @Test

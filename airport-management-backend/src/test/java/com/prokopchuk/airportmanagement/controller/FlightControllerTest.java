@@ -77,7 +77,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("flight_not_found", responseBody.getErrorCode());
+    assertEquals("flight_not_found", responseBody.getErrorId());
   }
 
   @Test
@@ -200,7 +200,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("flight_not_found", responseBody.getErrorCode());
+    assertEquals("flight_not_found", responseBody.getErrorId());
   }
 
   @Test
@@ -230,7 +230,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("crew_member_not_found_to_link_up", responseBody.getErrorCode());
+    assertEquals("crew_member_not_found_to_link_up", responseBody.getErrorId());
   }
 
   @Test
@@ -247,7 +247,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("flight_not_found_to_link_up", responseBody.getErrorCode());
+    assertEquals("flight_not_found_to_link_up", responseBody.getErrorId());
   }
 
   @Test
@@ -264,7 +264,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    assertEquals("link_already_exists", responseBody.getErrorCode());
+    assertEquals("link_already_exists", responseBody.getErrorId());
   }
 
   @Test
@@ -298,7 +298,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("crew_member_not_found_to_unlink_up", responseBody.getErrorCode());
+    assertEquals("crew_member_not_found_to_unlink_up", responseBody.getErrorId());
   }
 
   @Test
@@ -315,7 +315,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("flight_not_found_to_unlink_up", responseBody.getErrorCode());
+    assertEquals("flight_not_found_to_unlink_up", responseBody.getErrorId());
   }
 
   @Test
@@ -332,7 +332,7 @@ class FlightControllerTest {
     ErrorMessage responseBody = response.getBody();
 
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    assertEquals("link_is_absent", responseBody.getErrorCode());
+    assertEquals("link_is_absent", responseBody.getErrorId());
   }
 
   @Test

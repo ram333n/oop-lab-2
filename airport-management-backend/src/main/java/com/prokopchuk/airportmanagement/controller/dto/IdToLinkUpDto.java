@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class IdToLinkUpDto {
 
-  @NotNull
+  @NotNull(message = "id_to_link_is_empty:Id to link can not be empty")
   private Long idToLink;
 
 }

@@ -15,15 +15,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CrewMemberForm {
 
-  @NotBlank
-  @Size(max = 255)
+  @NotBlank(message = "name_is_blank:Name can not be blank")
+  @Size(max = 255, message = "name_max_size_limit:Max size of name is 255 characters")
   private String name;
 
-  @NotBlank
-  @Size(max = 255)
+  @NotBlank(message = "surname_is_blank:Surname can not be blank")
+  @Size(max = 255, message = "surname_max_size_limit:Max size of surname is 255 characters")
   private String surname;
 
-  @NotNull
+  @NotNull(message = "position_is_empty:Position can not be empty")
   private Position position;
 
 }

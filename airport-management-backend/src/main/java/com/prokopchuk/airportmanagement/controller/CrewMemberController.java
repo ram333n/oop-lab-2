@@ -102,7 +102,7 @@ public class CrewMemberController {
   @PostMapping("/crew-members/{crew-member-id}/flights")
   @ResponseStatus(HttpStatus.CREATED)
   public CrewMemberResponseDto linkUpFlight(@PathVariable("crew-member-id") Long crewMemberId,
-                                            @RequestBody IdToLinkUpDto flightId) {
+                                            @Valid @RequestBody IdToLinkUpDto flightId) {
     //existence validation is here
     linkService.linkUpCrewMemberAndFlight(crewMemberId, flightId.getIdToLink());
 

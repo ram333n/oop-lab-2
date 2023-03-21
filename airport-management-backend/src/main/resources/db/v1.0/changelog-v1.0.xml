@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro
+        http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+  <changeSet id="20230321-1.0" author="Roman Prokopchuk">
+    <createTable tableName="crew_members">
+      <column name="id" type="bigserial" >
+        <constraints primaryKey="true"
+                     nullable="false"/>
+
+      </column>
+
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="surname" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="position" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    
+    <createTable tableName="flights">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true"
+                     nullable="false"/>
+      </column>
+      
+      <column name="arrival_time" type="timestamp(6)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="departure_from" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="departure_time" type="timestamp(6)">
+        <constraints nullable="false"/>
+      </column>
+
+      <column name="destination" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    
+    <createTable tableName="crew_members_flights">
+      <column name="fk_crew_member_id" type="bigint">
+        <constraints foreignKeyName="fk_crew_member_id"
+                     references="crew_members(id)"
+                     nullable="false"/>
+      </column>
+
+      <column name="fk_flight_id" type="bigint">
+        <constraints foreignKeyName="fk_flight_id"
+                     references="flights(id)"
+                     nullable="false"/>
+      </column>
+    </createTable>
+    
+    <createTable tableName="users">
+      <column name="email" type="varchar(255)">
+        <constraints primaryKey="true"
+                     nullable="false"/>
+      </column>
+
+      <column name="role" type="varchar(255)"/>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>

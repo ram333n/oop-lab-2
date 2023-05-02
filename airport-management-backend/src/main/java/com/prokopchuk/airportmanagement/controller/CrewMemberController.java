@@ -17,6 +17,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class CrewMemberController {
   }
 
   @GetMapping("/crew-members")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   public CrewMembersListDto getListOfCrewMembers() {
     List<CrewMember> entities = crewMemberService.findAll();
 
@@ -54,6 +56,7 @@ public class CrewMemberController {
   }
 
   @GetMapping("/crew-members/{crew-member-id}")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   public CrewMemberResponseDto getCrewMemberById(@PathVariable("crew-member-id") Long id) {
     Optional<CrewMember> crewMemberOptional = crewMemberService.findCrewMemberById(id);
 
@@ -65,6 +68,7 @@ public class CrewMemberController {
   }
 
   @PostMapping("/crew-members")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
   public CrewMemberResponseDto createCrewMember(@Valid @RequestBody CrewMemberForm form) {
     CrewMember toSave = modelMapper.map(form, CrewMember.class);
@@ -75,6 +79,7 @@ public class CrewMemberController {
   }
 
   @PutMapping("/crew-members/{crew-member-id}")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   public CrewMemberResponseDto updateCrewMember(@PathVariable("crew-member-id") Long id,
                                                 @Valid @RequestBody CrewMemberForm form) {
     if (!crewMemberService.existsById(id)) {
@@ -90,6 +95,7 @@ public class CrewMemberController {
   }
 
   @DeleteMapping("/crew-members/{crew-member-id}")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteCrewMember(@PathVariable("crew-member-id") Long id) {
     boolean isDeleted = crewMemberService.deleteCrewMemberById(id);
@@ -100,6 +106,7 @@ public class CrewMemberController {
   }
 
   @PostMapping("/crew-members/{crew-member-id}/flights")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
   public CrewMemberResponseDto linkUpFlight(@PathVariable("crew-member-id") Long crewMemberId,
                                             @Valid @RequestBody IdToLinkUpDto flightId) {
@@ -112,6 +119,7 @@ public class CrewMemberController {
   }
 
   @DeleteMapping("/crew-members/{crew-member-id}/flights/{flight-id}")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void unlinkUpFlight(@PathVariable("crew-member-id") Long crewMemberId,
                              @PathVariable("flight-id") Long flightId) {

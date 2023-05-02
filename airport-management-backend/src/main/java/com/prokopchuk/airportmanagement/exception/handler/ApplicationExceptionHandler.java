@@ -4,6 +4,7 @@ import com.prokopchuk.airportmanagement.exception.CommonException;
 import com.prokopchuk.airportmanagement.exception.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,6 +34,17 @@ public class ApplicationExceptionHandler {
 
   private String getValidationErrorMessage(MethodArgumentNotValidException e) {
     return e.getBindingResult().getFieldError().getDefaultMessage();
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ErrorMessage> handleAccessDeniedException() {
+    ErrorMessage errorMessage = new ErrorMessage(
+        HttpStatus.FORBIDDEN,
+        "access_denied",
+        "Access denied"
+    );
+
+    return errorMessage.toResponseEntity();
   }
 
   @ExceptionHandler(Throwable.class)

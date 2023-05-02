@@ -15,3 +15,15 @@ spring:
   liquibase:
     change-log: db/changelog-master.xml
     enabled: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/auth/realms/airport-management-system
+
+jwt:
+  auth:
+    converter:
+      resource-id: ams-auth
+      principal-attribute: preferred_username

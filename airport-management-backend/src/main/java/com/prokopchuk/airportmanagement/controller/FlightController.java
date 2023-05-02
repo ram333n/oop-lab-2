@@ -17,6 +17,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ public class FlightController {
   }
 
   @GetMapping("/flights")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   public FlightsListDto getListOfFlights() {
     List<Flight> entities = flightService.findAll();
 
@@ -54,6 +56,7 @@ public class FlightController {
   }
 
   @GetMapping("/flights/{flight-id}")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   public FlightResponseDto getFlightById(@PathVariable("flight-id") Long id) {
     Optional<Flight> flightOptional = flightService.findFlightById(id);
 
@@ -65,6 +68,7 @@ public class FlightController {
   }
 
   @PostMapping("/flights")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
   public FlightResponseDto createFlight(@Valid @RequestBody FlightForm form) {
     Flight toSave = modelMapper.map(form, Flight.class);
@@ -75,6 +79,7 @@ public class FlightController {
   }
 
   @PutMapping("/flights/{flight-id}")
+  @PreAuthorize("hasRole('ADMIN')")
   public FlightResponseDto updateFlight(@PathVariable("flight-id") Long id,
                                         @Valid @RequestBody FlightForm form) {
     if (!flightService.existsById(id)) {
@@ -90,6 +95,7 @@ public class FlightController {
   }
 
   @DeleteMapping("/flights/{flight-id}")
+  @PreAuthorize("hasRole('ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteFlight(@PathVariable("flight-id") Long id) {
     boolean isDeleted = flightService.deleteFlightById(id);
@@ -100,6 +106,7 @@ public class FlightController {
   }
 
   @PostMapping("/flights/{flight-id}/crew-members")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   @ResponseStatus(HttpStatus.CREATED)
   public FlightResponseDto linkUpCrewMember(@PathVariable("flight-id") Long flightId,
                                             @Valid @RequestBody IdToLinkUpDto crewMemberId) {
@@ -112,6 +119,7 @@ public class FlightController {
   }
 
   @DeleteMapping("/flights/{flight-id}/crew-members/{crew-member-id}")
+  @PreAuthorize("hasAnyRole('DISPATCHER', 'ADMIN')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void unlinkUpCrewMember(@PathVariable("flight-id") Long flightId,
                                  @PathVariable("crew-member-id") Long crewMemberId) {
